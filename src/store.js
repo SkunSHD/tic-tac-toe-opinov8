@@ -1,15 +1,7 @@
 import Root from './models/Root';
 
 // firebase request
-const dataForInit = Array(9).fill('').map((item, i) => ({
-    id: i,
-    move: item
-}));
 
-const store = Root.create({
-    moves: {
-        ...dataForInit
-    }
-});
+const store = Root.create();
 
 export default store;

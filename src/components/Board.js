@@ -4,9 +4,13 @@ import Square from './Square';
 
 
 const Board = observer(
-    props => <ul className="list">
-        { Array(9).fill('x/o').map((item, i) => <Square key={i} id={i} />) }
-    </ul>
+    props => {
+        return (
+            <ul className="board">
+                { Object.keys(props.store).map(id => <Square key={id} id={id} />)}
+            </ul>
+        )
+    }
 );
 
 
