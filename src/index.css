@@ -3,3 +3,18 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+.list {
+  margin: 0 auto;
+  padding: 0;
+  width: 300px;
+}
+.item {
+  display: inline-block;
+  box-sizing: border-box;
+  border: 1px solid #484848;
+  height: 100px;
+  width: 100px;
+  background-color: #9bdbff;
+  font-size: 24px;
+  text-align: center;
+}

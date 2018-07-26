@@ -1,16 +1,9 @@
 import {types} from "mobx-state-tree";
-
+import Square from './Square';
 
 const Root = types.model({
-    count: types.optional(types.number, 0)
-}).actions(self => ({
-    increment(){
-        self.count++
-    },
-    decrement() {
-        self.count--
-    }
-}));
+    moves: types.map(Square)
+});
 
 
 export default Root;
