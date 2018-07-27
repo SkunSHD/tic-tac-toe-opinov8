@@ -5,10 +5,13 @@ import TimeTravel from 'components/TimeTravel';
 
 
 const App = (props) => (
-    <React.Fragment>
-        <Board {...props}/>
-        <TimeTravel/>
-    </React.Fragment>
+    props.store.moves.size ?
+        <React.Fragment>
+            <Board {...props}/>
+            <TimeTravel/>
+        </React.Fragment>
+        :
+        <p>Loading...</p>
 );
 
 export default observer(App);

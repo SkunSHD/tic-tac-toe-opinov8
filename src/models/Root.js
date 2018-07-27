@@ -8,13 +8,14 @@ const Root = types
     .actions(self => {
         const { db } = getEnv(self);
 
-        const fetchMoves = flow(function * (resolve) {
+        const fetchMoves = flow(function * () {
             const dbSnapshot = yield db.ref('moves').once('value');
             const dbState = dbSnapshot.val();
-            const initState = dbState && dbState.length ? dbState : Array(9).fill('');
-
+            const initState = dbState && dbState.length === 9 ?
+                dbState
+                :
+                Array(9).fill('');
             initState.forEach((move, id) => self.moves.set(id, move));
-            resolve();
         });
 
         const toggle = flow(function * (id) {
@@ -26,15 +27,15 @@ const Root = types
 
             const error = yield postMoves(newMovesState);
 
-            if(error) alert('Bad connection! Try again.');
-            else self.moves.set(id, newMove);
+            if(error) alert('Sending Error! Your game is offline now!');
+            self.moves.set(id, newMove)
         });
 
         const resetGame = flow(function * () {
             const cleanMoveState = Array(9).fill('');
             const error = yield postMoves(cleanMoveState);
-            if(error) alert('Bad connection! Try again.');
-            else self.moves.forEach((val, key)=> self.moves.set(key, ''));
+            if(error) alert('Sending Error! Your game is offline now!');
+            self.moves.forEach((val, key)=> self.moves.set(key, ''));
         });
 
         const postMoves = (newMovesState) => {
