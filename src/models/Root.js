@@ -8,57 +8,50 @@ const Root = types
     .actions(self => {
         const { db } = getEnv(self);
 
-        const fetchMoves = flow(function * (callback) {
+        const fetchMoves = flow(function * (resolve) {
             const dbSnapshot = yield db.ref('moves').once('value');
             const dbState = dbSnapshot.val();
+            const initState = dbState && dbState.length ? dbState : Array(9).fill('');
 
-            if(dbState) {
-                for(let id in Object.keys(dbState)) {
-                    self.moves.set(id, dbState[id]);
-                }
-            }
-            else yield resetGame();
-            callback();
+            initState.forEach((move, id) => self.moves.set(id, move));
+            resolve();
         });
 
         const toggle = flow(function * (id) {
             if(self.moves.get(id)) return;
             if(self.isWinner || self.isAllFilled) return;
 
-            const newMoves = self.newMoves(id);
-            const error = yield postMoves(newMoves);
+            const newMove = self.newMove;
+            const newMovesState = self.getNewMoveState(id, newMove);
+
+            const error = yield postMoves(newMovesState);
 
             if(error) alert('Bad connection! Try again.');
-            else {
-                self.moves.set(id, self.nextMove);
-            }
+            else self.moves.set(id, newMove);
         });
 
         const resetGame = flow(function * () {
-            const clearMoveState = Array(9).fill('');
-            const error = yield postMoves(clearMoveState);
+            const cleanMoveState = Array(9).fill('');
+            const error = yield postMoves(cleanMoveState);
             if(error) alert('Bad connection! Try again.');
-            else {
-                for(let id in Object.keys(clearMoveState)) {
-                    self.moves.set(id, clearMoveState[id]);
-                }
-            }
+            else self.moves.forEach((val, key)=> self.moves.set(key, ''));
         });
 
-        const postMoves = (newMoves) => {
-            // for server error mock:
+        const postMoves = (newMovesState) => {
+            // mock server error
             // return new Promise(resolve => setTimeout(()=> resolve('some error'), 1000));
-            return db.ref('moves').set(newMoves)
+            return db.ref('moves').set(newMovesState)
         };
-
-
 
         return { toggle, fetchMoves, resetGame };
     })
     .views(self => ({
-        get nextMove() {
-            const xCount = [...self.moves.values()].filter(move => move === 'x').length;
-            const oCount = [...self.moves.values()].filter(move => move === 'o').length;
+        get movesStateJson() {
+            return [...self.moves.values()];
+        },
+        get newMove() {
+            const xCount = self.movesStateJson.filter(move => move === 'x').length;
+            const oCount = self.movesStateJson.filter(move => move === 'o').length;
             return xCount > oCount ? 'o' : 'x';
         },
         get isWinner() {
@@ -70,20 +63,19 @@ const Root = types
             });
         },
         get isAllFilled() {
-            return [...self.moves.values()].filter(move => move).length === 9;
+            return self.movesStateJson.filter(move => move).length === 9;
         },
         get winnerName() {
             if(self.isWinner && !self.isAllFilled) {
-                const looser = self.nextMove;
+                const looser = self.newMove;
                 return looser === 'x' ? 'NOUGHT' : 'CROSS';
             }
             if(self.isAllFilled) return 'EVEN';
         },
-        newMoves(id) {
-            const curMoves = [...self.moves.values()];
-            curMoves[id] = self.nextMove;
-            const newMoves = curMoves;
-            return newMoves;
+        getNewMoveState(id, newMove) {
+            const curState = self.movesStateJson;
+            curState[id] = newMove;
+            return curState;
         }
     }));
 

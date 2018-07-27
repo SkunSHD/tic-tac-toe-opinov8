@@ -1,7 +1,7 @@
 import React from "react"
 import {observer} from 'mobx-react';
-import Board from './Board';
-import TimeTravel from './TimeTravel';
+import Board from 'components/Board';
+import TimeTravel from 'components/TimeTravel';
 
 
 const App = (props) => (

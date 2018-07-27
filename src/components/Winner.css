@@ -1,0 +1,14 @@
+.title {
+    position: absolute;
+    right: 0;
+    bottom: 100%;
+    left: 0;
+}
+.button-wrapper {
+    position: absolute;
+    top: 100%;
+    margin-top: 20px;
+    left: 0;
+    right: 0;
+}
+

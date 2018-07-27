@@ -1,6 +1,6 @@
 import Root from '../models/Root';
 import {addMiddleware} from "mobx-state-tree";
-import db from 'db';
+import db from 'utils/db';
 import logger from 'utils/logger';
 
 

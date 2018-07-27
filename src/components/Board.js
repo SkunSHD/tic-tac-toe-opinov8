@@ -2,6 +2,7 @@ import React from "react"
 import { observer } from 'mobx-react';
 import './Board.css';
 import Square from 'components/Square';
+import Winner from 'components/Winner';
 
 
 const Board = ({store}) => (
@@ -10,14 +11,7 @@ const Board = ({store}) => (
             {[...store.moves.keys()].map((val, ind) => <Square key={ind} id={ind} store={store}/>)}
         </ul>
 
-        {store.winnerName &&
-        <React.Fragment>
-            <h1 className="title">Winner is {store.winnerName}</h1>
-            <div className="button-wrapper">
-                <button onClick={store.resetGame}>Restart game</button>
-            </div>
-        </React.Fragment>
-        }
+        <Winner store={store}/>
     </div>
 );
 
