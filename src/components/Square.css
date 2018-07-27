@@ -1,0 +1,18 @@
+.square {
+    float: left;
+    margin-top: -1px;
+    margin-left: -1px;
+    border-width: 1px 0 0 1px;
+    border-style: solid;
+    border-color: #484848;
+    height: 100px;
+    width: 100px;
+    background-color: #9bdbff;
+    font-size: 24px;
+    line-height: 100px;
+    text-align: center;
+    text-transform: uppercase;
+}
+.square:nth-child(3n+1) {
+    clear: left;
+}

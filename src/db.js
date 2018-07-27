@@ -1,5 +1,5 @@
-import firebase from 'firebase';
-
+import firebase from 'firebase/app';
+import 'firebase/database';
 
 var config = {
     apiKey: "AIzaSyDt9v5V_PaCC3iAloy6UWWly_KcQIRjEU4",
@@ -9,7 +9,7 @@ var config = {
     storageBucket: "tic-tac-toe-opinov8.appspot.com",
     messagingSenderId: "651417594632"
 };
-firebase.initializeApp(config);
-const database = firebase.database();
-console.log("----|> database\", database)
-export default database;
+
+const fbInstance = firebase.initializeApp(config);
+
+export default fbInstance.database();

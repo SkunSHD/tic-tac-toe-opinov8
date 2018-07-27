@@ -1,14 +1,16 @@
 import React from "react"
 import { observer } from 'mobx-react';
-import store from '../store';
+import './Square.css';
+
 
 const Square = observer(
-    props => (
-        <li className="square" onClick={()=> store.toggle(props.id)}>
-            {store[props.id]}
-        </li>
-    )
+    ({ id, store }) => {
+        return (
+            <li className="square" onClick={()=> store.toggle(id)}>
+                {store.moves[id]}
+            </li>
+        )
+    }
 );
-
 
 export default Square;

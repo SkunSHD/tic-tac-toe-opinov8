@@ -1,0 +1,29 @@
+.game {
+    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+}
+.board {
+    vertical-align: top;
+    display: inline-block;
+    border: 1px solid #484848;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.title {
+    position: absolute;
+    right: 0;
+    bottom: 100%;
+    left: 0;
+}
+.button-wrapper {
+    position: absolute;
+    top: 100%;
+    margin-top: 20px;
+    left: 0;
+    right: 0;
+}
+

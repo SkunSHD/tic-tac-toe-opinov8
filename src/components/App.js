@@ -1,13 +1,14 @@
 import React from "react"
 import { observer } from 'mobx-react';
 import Board from './Board';
+import TimeTravel from './TimeTravel';
 
-const App = observer(
-    props => <React.Fragment>
-        <Board {...props} />
+
+const App = (props) => (
+    <React.Fragment>
+        <Board/>
+        <TimeTravel/>
     </React.Fragment>
-
 );
 
-
-export default App;
+export default observer(App);
