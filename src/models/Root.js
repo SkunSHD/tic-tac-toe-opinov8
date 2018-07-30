@@ -8,14 +8,17 @@ const Root = types
     .actions(self => {
         const { db } = getEnv(self);
 
-        const fetchMoves = flow(function * () {
+        const afterCreate = ()=> {
+            self.initStateFetch();
+        };
+
+        const initStateFetch = flow(function * () {
             const dbSnapshot = yield db.ref('moves').once('value');
             const dbState = dbSnapshot.val();
-            const initState = dbState && dbState.length === 9 ?
-                dbState
+            self.moves = dbState && dbState.length === 9 ?
+                {...dbState}
                 :
-                Array(9).fill('');
-            initState.forEach((move, id) => self.moves.set(id, move));
+                {...Array(9).fill('')};
         });
 
         const toggle = flow(function * (id) {
@@ -44,7 +47,7 @@ const Root = types
             return db.ref('moves').set(newMovesState)
         };
 
-        return { toggle, fetchMoves, resetGame };
+        return { toggle, initStateFetch, resetGame, afterCreate };
     })
     .views(self => ({
         get movesStateJson() {
