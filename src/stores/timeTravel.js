@@ -1,27 +1,30 @@
 import store from "stores/store"
 import { applySnapshot, onSnapshot } from "mobx-state-tree"
 
-const states = [];
-let currentFrame = -1;
+
+const snapshots = [];
+let step = -1;
 
 
 onSnapshot(store, snapshot => {
-    if (currentFrame === states.length - 1) {
-        currentFrame++;
-        states.push(snapshot)
+    if(step === snapshots.length - 1) {
+        step++;
+        snapshots.push(snapshot);
     }
 });
 
 const previousState = ()=> {
-    if (currentFrame === 0) return;
-    currentFrame--;
-    applySnapshot(store, states[currentFrame])
+    if(step === 0) return;
+    step--;
+    applySnapshot(store, snapshots[step])
 };
 
+
 const nextState = ()=> {
-    if (currentFrame === states.length - 1) return;
-    currentFrame++;
-    applySnapshot(store, states[currentFrame])
+    if(step === snapshots.length - 1) return;
+    applySnapshot(store, snapshots[step + 1]);
+    step++
 };
+
 
 export default { nextState, previousState };
